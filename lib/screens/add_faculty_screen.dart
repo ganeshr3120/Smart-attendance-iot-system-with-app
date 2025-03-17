@@ -14,8 +14,8 @@ class _AddFacultyScreenState extends State<AddFacultyScreen> {
   final TextEditingController _facultyNoController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  String? _selectedClass; // Holds the selected class
-  final List<String> _selectedSubjects = [];
+  final List<String> _selectedClasses = []; // Holds the selected classes
+  final List<String> _selectedSubjects = []; // Holds the selected subjects
 
   // Predefined list of classes
   final List<String> _availableClasses = ['ER', 'EEE', 'EC', 'MECH', 'CS'];
@@ -42,7 +42,7 @@ class _AddFacultyScreenState extends State<AddFacultyScreen> {
     if (name.isEmpty ||
         facultyNo.isEmpty ||
         password.isEmpty ||
-        _selectedClass == null ||
+        _selectedClasses.isEmpty ||
         _selectedSubjects.isEmpty) {
       ScaffoldMessenger.of(
         context,
@@ -53,7 +53,7 @@ class _AddFacultyScreenState extends State<AddFacultyScreen> {
     Map<String, dynamic> facultyData = {
       'name': name,
       'facultyNo': facultyNo,
-      'facultyClass': _selectedClass,
+      'facultyClasses': _selectedClasses, // Store multiple selected classes
       'password': password,
       'subjects': _selectedSubjects,
     };
@@ -68,7 +68,7 @@ class _AddFacultyScreenState extends State<AddFacultyScreen> {
     _facultyNoController.clear();
     _passwordController.clear();
     setState(() {
-      _selectedClass = null;
+      _selectedClasses.clear();
       _selectedSubjects.clear();
     });
   }
@@ -91,22 +91,28 @@ class _AddFacultyScreenState extends State<AddFacultyScreen> {
               decoration: InputDecoration(labelText: 'Faculty No'),
             ),
             SizedBox(height: 10),
-            // Class Selection Dropdown
-            DropdownButtonFormField<String>(
-              value: _selectedClass,
-              decoration: InputDecoration(labelText: 'Select Class'),
-              items:
+            Text(
+              'Select Classes:',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            Wrap(
+              spacing: 8.0,
+              children:
                   _availableClasses.map((classItem) {
-                    return DropdownMenuItem<String>(
-                      value: classItem,
-                      child: Text(classItem),
+                    return ChoiceChip(
+                      label: Text(classItem),
+                      selected: _selectedClasses.contains(classItem),
+                      onSelected: (selected) {
+                        setState(() {
+                          if (selected) {
+                            _selectedClasses.add(classItem);
+                          } else {
+                            _selectedClasses.remove(classItem);
+                          }
+                        });
+                      },
                     );
                   }).toList(),
-              onChanged: (newValue) {
-                setState(() {
-                  _selectedClass = newValue;
-                });
-              },
             ),
             SizedBox(height: 10),
             TextField(
