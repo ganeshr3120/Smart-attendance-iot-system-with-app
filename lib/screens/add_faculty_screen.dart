@@ -12,10 +12,15 @@ class AddFacultyScreen extends StatefulWidget {
 class _AddFacultyScreenState extends State<AddFacultyScreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _facultyNoController = TextEditingController();
-  final TextEditingController _classController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
+  String? _selectedClass; // Holds the selected class
   final List<String> _selectedSubjects = [];
 
+  // Predefined list of classes
+  final List<String> _availableClasses = ['ER', 'EEE', 'EC', 'MECH', 'CS'];
+
+  // Predefined list of subjects
   final List<String> _availableSubjects = [
     'Mathematics',
     'Physics',
@@ -32,13 +37,12 @@ class _AddFacultyScreenState extends State<AddFacultyScreen> {
 
     String name = _nameController.text.trim();
     String facultyNo = _facultyNoController.text.trim();
-    String facultyClass = _classController.text.trim();
     String password = _passwordController.text.trim();
 
     if (name.isEmpty ||
         facultyNo.isEmpty ||
-        facultyClass.isEmpty ||
         password.isEmpty ||
+        _selectedClass == null ||
         _selectedSubjects.isEmpty) {
       ScaffoldMessenger.of(
         context,
@@ -49,7 +53,7 @@ class _AddFacultyScreenState extends State<AddFacultyScreen> {
     Map<String, dynamic> facultyData = {
       'name': name,
       'facultyNo': facultyNo,
-      'facultyClass': facultyClass,
+      'facultyClass': _selectedClass,
       'password': password,
       'subjects': _selectedSubjects,
     };
@@ -62,9 +66,9 @@ class _AddFacultyScreenState extends State<AddFacultyScreen> {
 
     _nameController.clear();
     _facultyNoController.clear();
-    _classController.clear();
     _passwordController.clear();
     setState(() {
+      _selectedClass = null;
       _selectedSubjects.clear();
     });
   }
@@ -76,7 +80,6 @@ class _AddFacultyScreenState extends State<AddFacultyScreen> {
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             TextField(
               controller: _nameController,
@@ -88,9 +91,22 @@ class _AddFacultyScreenState extends State<AddFacultyScreen> {
               decoration: InputDecoration(labelText: 'Faculty No'),
             ),
             SizedBox(height: 10),
-            TextField(
-              controller: _classController,
-              decoration: InputDecoration(labelText: 'Class Assigned'),
+            // Class Selection Dropdown
+            DropdownButtonFormField<String>(
+              value: _selectedClass,
+              decoration: InputDecoration(labelText: 'Select Class'),
+              items:
+                  _availableClasses.map((classItem) {
+                    return DropdownMenuItem<String>(
+                      value: classItem,
+                      child: Text(classItem),
+                    );
+                  }).toList(),
+              onChanged: (newValue) {
+                setState(() {
+                  _selectedClass = newValue;
+                });
+              },
             ),
             SizedBox(height: 10),
             TextField(
@@ -104,6 +120,7 @@ class _AddFacultyScreenState extends State<AddFacultyScreen> {
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             Wrap(
+              spacing: 8.0,
               children:
                   _availableSubjects.map((subject) {
                     return ChoiceChip(
