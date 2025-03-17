@@ -11,10 +11,20 @@ class AddStudentScreen extends StatefulWidget {
 class _AddStudentScreenState extends State<AddStudentScreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _rollNoController = TextEditingController();
-  final TextEditingController _classController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _rfidController = TextEditingController();
+
+  String? _selectedBranch; // Holds the selected branch
+
+  // List of available branches
+  final List<String> branches = [
+    'Computer Science',
+    'Mechanical Engineering',
+    'Electrical Engineering',
+    'Civil Engineering',
+    'Electronics and Communication',
+  ];
 
   Future<void> _saveStudent() async {
     final prefs = await SharedPreferences.getInstance();
@@ -28,11 +38,13 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
     if (username.isNotEmpty &&
         password.isNotEmpty &&
         name.isNotEmpty &&
-        rollNo.isNotEmpty) {
+        rollNo.isNotEmpty &&
+        _selectedBranch != null) {
       // Store student details properly
       await prefs.setString('${username}_password', password);
       await prefs.setString('${username}_name', name);
       await prefs.setString('${username}_rollNo', rollNo);
+      await prefs.setString('${username}_branch', _selectedBranch!);
       await prefs.setString('${username}_rfid', rfid);
 
       // Initialize attendance
@@ -66,9 +78,22 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
               controller: _rollNoController,
               decoration: InputDecoration(labelText: 'Roll No'),
             ),
-            TextField(
-              controller: _classController,
-              decoration: InputDecoration(labelText: 'Class'),
+            // Dropdown for Branch Selection
+            DropdownButtonFormField<String>(
+              value: _selectedBranch,
+              decoration: InputDecoration(labelText: 'Select Branch'),
+              items:
+                  branches.map((branch) {
+                    return DropdownMenuItem<String>(
+                      value: branch,
+                      child: Text(branch),
+                    );
+                  }).toList(),
+              onChanged: (newValue) {
+                setState(() {
+                  _selectedBranch = newValue;
+                });
+              },
             ),
             TextField(
               controller: _usernameController,
