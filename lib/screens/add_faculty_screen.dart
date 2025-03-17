@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
 
 class AddFacultyScreen extends StatefulWidget {
   const AddFacultyScreen({super.key});
@@ -11,6 +13,7 @@ class _AddFacultyScreenState extends State<AddFacultyScreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _facultyNoController = TextEditingController();
   final TextEditingController _classController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
   final List<String> _selectedSubjects = [];
 
   final List<String> _availableSubjects = [
@@ -24,14 +27,18 @@ class _AddFacultyScreenState extends State<AddFacultyScreen> {
     'Geography',
   ];
 
-  void _addFaculty() {
+  Future<void> _addFaculty() async {
+    final prefs = await SharedPreferences.getInstance();
+
     String name = _nameController.text.trim();
     String facultyNo = _facultyNoController.text.trim();
     String facultyClass = _classController.text.trim();
+    String password = _passwordController.text.trim();
 
     if (name.isEmpty ||
         facultyNo.isEmpty ||
         facultyClass.isEmpty ||
+        password.isEmpty ||
         _selectedSubjects.isEmpty) {
       ScaffoldMessenger.of(
         context,
@@ -39,7 +46,17 @@ class _AddFacultyScreenState extends State<AddFacultyScreen> {
       return;
     }
 
-    // Here, you can store faculty details in a local database (like SQLite) or a list
+    // Store faculty details in SharedPreferences
+    Map<String, dynamic> facultyData = {
+      'name': name,
+      'facultyNo': facultyNo,
+      'facultyClass': facultyClass,
+      'password': password,
+      'subjects': _selectedSubjects,
+    };
+
+    await prefs.setString(facultyNo, jsonEncode(facultyData));
+
     ScaffoldMessenger.of(
       context,
     ).showSnackBar(SnackBar(content: Text("Faculty Added Successfully!")));
@@ -48,6 +65,7 @@ class _AddFacultyScreenState extends State<AddFacultyScreen> {
     _nameController.clear();
     _facultyNoController.clear();
     _classController.clear();
+    _passwordController.clear();
     setState(() {
       _selectedSubjects.clear();
     });
@@ -75,6 +93,12 @@ class _AddFacultyScreenState extends State<AddFacultyScreen> {
             TextField(
               controller: _classController,
               decoration: InputDecoration(labelText: 'Class Assigned'),
+            ),
+            SizedBox(height: 10),
+            TextField(
+              controller: _passwordController,
+              decoration: InputDecoration(labelText: 'Password'),
+              obscureText: true,
             ),
             SizedBox(height: 10),
             Text(

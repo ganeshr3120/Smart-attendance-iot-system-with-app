@@ -22,15 +22,17 @@ class _StudentLoginScreenState extends State<StudentLoginScreen> {
     String? savedPassword = prefs.getString(
       '${username}_password',
     ); // Get saved password
-    String? studentName = prefs.getString(
-      '${username}_name',
-    ); // Get student name
-    String? rollNo = prefs.getString('${username}_rollNo'); // Get roll number
+    String studentName =
+        prefs.getString('${username}_name') ??
+        ''; // Get student name or default to empty string
+    String rollNo =
+        prefs.getString('${username}_rollNo') ??
+        ''; // Get roll number or default to empty string
 
-    if (savedPassword != null && savedPassword == password) {
+    if (savedPassword == password) {
       // Save student details for Home Screen
-      await prefs.setString('student_name', studentName!);
-      await prefs.setString('student_rollNo', rollNo!);
+      await prefs.setString('student_name', studentName);
+      await prefs.setString('student_rollNo', rollNo);
 
       // Initialize attendance if not set
       if (!prefs.containsKey('${username}_total_classes')) {
