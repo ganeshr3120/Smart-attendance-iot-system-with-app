@@ -13,6 +13,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
   final TextEditingController _rollNoController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _emailId = TextEditingController();
   final TextEditingController _rfidController = TextEditingController();
 
   String? _selectedBranch; // Holds the selected branch
@@ -31,6 +32,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
 
     String username = _usernameController.text.trim();
     String password = _passwordController.text.trim();
+    String email = _emailId.text.trim();
     String name = _nameController.text.trim();
     String rollNo = _rollNoController.text.trim();
     String rfid = _rfidController.text.trim();
@@ -38,6 +40,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
     if (username.isNotEmpty &&
         password.isNotEmpty &&
         name.isNotEmpty &&
+        email.isNotEmpty &&
         rollNo.isNotEmpty &&
         _selectedBranch != null) {
       // Store student details properly
@@ -46,6 +49,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
       await prefs.setString('${username}_rollNo', rollNo);
       await prefs.setString('${username}_branch', _selectedBranch!);
       await prefs.setString('${username}_rfid', rfid);
+      await prefs.setString('${username}_rfid', email);
 
       // Initialize attendance
       await prefs.setInt('${username}_total_classes', 0);
@@ -94,6 +98,10 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                   _selectedBranch = newValue;
                 });
               },
+            ),
+            TextField(
+              controller: _emailId,
+              decoration: InputDecoration(labelText: 'Email'),
             ),
             TextField(
               controller: _usernameController,
