@@ -46,7 +46,6 @@ class _AddFacultyScreenState extends State<AddFacultyScreen> {
       return;
     }
 
-    // Store faculty details in SharedPreferences
     Map<String, dynamic> facultyData = {
       'name': name,
       'facultyNo': facultyNo,
@@ -61,7 +60,6 @@ class _AddFacultyScreenState extends State<AddFacultyScreen> {
       context,
     ).showSnackBar(SnackBar(content: Text("Faculty Added Successfully!")));
 
-    // Clear input fields
     _nameController.clear();
     _facultyNoController.clear();
     _classController.clear();

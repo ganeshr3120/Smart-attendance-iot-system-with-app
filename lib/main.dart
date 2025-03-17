@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
         '/facultyLogin': (context) => FacultyLoginScreen(),
         '/adminLogin': (context) => AdminLoginScreen(),
         '/studentHome': (context) => StudentHomeScreen(),
-        '/facultyHome': (context) => FacultyHomeScreen(),
+        '/facultyHome': (context) => FacultyHomeScreen(facultyInfo: {}),
         '/adminHome': (context) => AdminHomeScreen(),
       },
     );

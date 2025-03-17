@@ -23,27 +23,29 @@ class _FacultyLoginScreenState extends State<FacultyLoginScreen> {
     String? facultyData = prefs.getString(facultyNo);
 
     if (facultyData == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Invalid Faculty Number!")),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Invalid Faculty Number!")));
       return;
     }
 
     Map<String, dynamic> facultyInfo = jsonDecode(facultyData);
 
     if (facultyInfo['password'] == password) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Login Successful!")),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Login Successful!")));
 
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => FacultyHomeScreen()),
+        MaterialPageRoute(
+          builder: (context) => FacultyHomeScreen(facultyInfo: facultyInfo),
+        ),
       );
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Invalid Password!")),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Invalid Password!")));
     }
   }
 
@@ -67,10 +69,7 @@ class _FacultyLoginScreenState extends State<FacultyLoginScreen> {
               obscureText: true,
             ),
             SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _login,
-              child: Text('Login'),
-            ),
+            ElevatedButton(onPressed: _login, child: Text('Login')),
           ],
         ),
       ),
