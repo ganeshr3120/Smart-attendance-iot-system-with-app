@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'faculty_studentList.dart'; // Import the correct student list screen file
 
 class FacultyHomeScreen extends StatelessWidget {
   final Map<String, dynamic> facultyInfo;
@@ -41,14 +42,21 @@ class FacultyHomeScreen extends StatelessWidget {
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
-                  // Navigate to attendance control
+                  // Navigate to attendance control (Placeholder)
+                  print("Navigate to Attendance Control");
                 },
                 child: Text('Attendance Control'),
               ),
               SizedBox(height: 10),
               ElevatedButton(
                 onPressed: () {
-                  // Navigate to student list
+                  // Navigate to Student List Screen (faculty_studentList.dart)
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => FacultyStudentListScreen(),
+                    ),
+                  );
                 },
                 child: Text('Student List'),
               ),
