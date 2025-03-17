@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 
-class FacultyStudentListScreen extends StatelessWidget {
+class FacultyStudentListScreen extends StatefulWidget {
+  @override
+  _FacultyStudentListScreenState createState() =>
+      _FacultyStudentListScreenState();
+}
+
+class _FacultyStudentListScreenState extends State<FacultyStudentListScreen> {
   // Sample student data
   final List<Map<String, String>> students = [
     {'name': 'John Doe', 'id': 'S101'},
@@ -8,6 +14,13 @@ class FacultyStudentListScreen extends StatelessWidget {
     {'name': 'Robert Brown', 'id': 'S103'},
     {'name': 'Emily Davis', 'id': 'S104'},
   ];
+
+  // Sample class and subject data
+  final List<String> classes = ['ER', 'EEE', 'MECH', 'CS', 'EC'];
+  final List<String> subjects = ['Math', 'Science', 'History'];
+
+  String? selectedClass;
+  String? selectedSubject;
 
   @override
   Widget build(BuildContext context) {
@@ -19,20 +32,38 @@ class FacultyStudentListScreen extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              ElevatedButton(
-                onPressed: () {
-                  // Handle class selection
-                  print("Class Selected");
+              DropdownButton<String>(
+                hint: Text('Select Class'),
+                value: selectedClass,
+                onChanged: (newValue) {
+                  setState(() {
+                    selectedClass = newValue;
+                  });
                 },
-                child: Text('Select Class'),
+                items:
+                    classes.map((String className) {
+                      return DropdownMenuItem<String>(
+                        value: className,
+                        child: Text(className),
+                      );
+                    }).toList(),
               ),
-              SizedBox(width: 20), // Spacing between buttons
-              ElevatedButton(
-                onPressed: () {
-                  // Handle subject selection
-                  print("Subject Selected");
+              SizedBox(width: 20), // Spacing between dropdowns
+              DropdownButton<String>(
+                hint: Text('Select Subject'),
+                value: selectedSubject,
+                onChanged: (newValue) {
+                  setState(() {
+                    selectedSubject = newValue;
+                  });
                 },
-                child: Text('Select Subject'),
+                items:
+                    subjects.map((String subjectName) {
+                      return DropdownMenuItem<String>(
+                        value: subjectName,
+                        child: Text(subjectName),
+                      );
+                    }).toList(),
               ),
             ],
           ),
