@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'student_viewAttenda.dart';
 
 class StudentHomeScreen extends StatefulWidget {
   @override
@@ -44,7 +45,12 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
             SizedBox(height: 10),
             ElevatedButton(
               onPressed: () {
-                // Implement View Attendance Navigation
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => StudentAttendanceScreen(),
+                  ),
+                );
               },
               child: Text("View Attendance"),
             ),
