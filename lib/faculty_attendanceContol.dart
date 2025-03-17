@@ -73,7 +73,7 @@ class _FacultyAttendanceControlScreenState
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(
-                        'Attendance marked for $selectedClass - $selectedSubject at $selectedTimeSlot',
+                        'Attendance started for $selectedClass - $selectedSubject at $selectedTimeSlot',
                       ),
                     ),
                   );
@@ -87,7 +87,15 @@ class _FacultyAttendanceControlScreenState
                   );
                 }
               },
-              child: Text('Mark Attendance'),
+              child: Text('start Attendance'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Attendance slot clossed')),
+                );
+              },
+              child: Text('stop attendance'),
             ),
           ],
         ),
