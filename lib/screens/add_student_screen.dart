@@ -19,13 +19,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
   String? _selectedBranch; // Holds the selected branch
 
   // List of available branches
-  final List<String> branches = [
-    'Computer Science',
-    'Mechanical Engineering',
-    'Electrical Engineering',
-    'Civil Engineering',
-    'Electronics and Communication',
-  ];
+  final List<String> branches = ['ER', 'EEE', 'EC', 'MECH', 'CS'];
 
   Future<void> _saveStudent() async {
     final prefs = await SharedPreferences.getInstance();

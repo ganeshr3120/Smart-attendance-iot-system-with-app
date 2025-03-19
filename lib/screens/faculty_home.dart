@@ -26,21 +26,6 @@ class FacultyHomeScreen extends StatelessWidget {
                 'Faculty No: ${facultyInfo['facultyNo']}',
                 style: TextStyle(fontSize: 16),
               ),
-              Text(
-                'Class Assigned: ${facultyInfo['facultyClass']}',
-                style: TextStyle(fontSize: 16),
-              ),
-              Text(
-                'Subjects:',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-              ...facultyInfo['subjects']
-                  .map<Widget>(
-                    (subject) =>
-                        Text('• $subject', style: TextStyle(fontSize: 14)),
-                  )
-                  .toList(),
-              SizedBox(height: 20),
 
               // Navigate to Attendance Control Screen
               ElevatedButton(
