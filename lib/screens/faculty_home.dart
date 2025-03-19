@@ -27,13 +27,15 @@ class FacultyHomeScreen extends StatelessWidget {
                 style: TextStyle(fontSize: 16),
               ),
 
-              // Navigate to Attendance Control Screen
+              // Navigate to Attendance Control Screen with facultyNo
               ElevatedButton(
                 onPressed: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => FacultyAttendanceControlScreen(),
+                      builder: (context) => FacultyAttendanceControlScreen(
+                        facultyNo: facultyInfo['facultyNo'],
+                      ),
                     ),
                   );
                 },
@@ -61,3 +63,4 @@ class FacultyHomeScreen extends StatelessWidget {
     );
   }
 }
+
