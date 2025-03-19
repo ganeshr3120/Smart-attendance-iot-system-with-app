@@ -25,11 +25,11 @@ class _AddFacultyScreenState extends State<AddFacultyScreen> {
     'Mathematics',
     'Physics',
     'Chemistry',
-    'Biology',
+    'AI',
     'English',
-    'Computer Science',
-    'History',
-    'Geography',
+    'CS',
+    'Electronics',
+    'Electrical',
   ];
 
   Future<void> _addFaculty() async {
