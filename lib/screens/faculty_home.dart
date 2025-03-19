@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'faculty_studentList.dart'; // Import Student List Screen
-import 'package:smart_attendance_system/faculty_attendanceContol.dart'; // Import Attendance Control Screen
+import 'package:smart_attendance_system/screens/faculty_attendanceContol.dart'; // Import Attendance Control Screen
 
 class FacultyHomeScreen extends StatelessWidget {
   final Map<String, dynamic> facultyInfo;

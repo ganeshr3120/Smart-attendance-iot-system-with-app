@@ -22,33 +22,21 @@ class _StudentAttendanceScreenState extends State<StudentAttendanceScreen> {
     String? attendanceJson = prefs.getString('attendanceData');
 
     if (attendanceJson != null) {
-      setState(() {
-        attendanceData = List<Map<String, dynamic>>.from(
-          jsonDecode(attendanceJson),
-        );
-      });
+      try {
+        List<dynamic> decodedData = jsonDecode(attendanceJson);
+        setState(() {
+          attendanceData = List<Map<String, dynamic>>.from(decodedData);
+        });
+      } catch (e) {
+        print("Error decoding attendance data: $e");
+      }
     } else {
-      setState(() {
-        attendanceData = [
-          {
-            'subject': 'Power Electronics and Drives',
-            'attended': 26,
-            'total': 29,
-          },
-          {'subject': 'Internet of Things', 'attended': 36, 'total': 43},
-          {'subject': 'Electrical Machines', 'attended': 33, 'total': 39},
-          {
-            'subject': 'Industrial Economics and Foreign Trade',
-            'attended': 20,
-            'total': 22,
-          },
-          {'subject': 'Embedded Systems & IoT Lab', 'attended': 9, 'total': 12},
-        ];
-      });
+      print("No attendance data found");
     }
   }
 
   double _calculatePercentage(int attended, int total) {
+    if (total == 0) return 0; // Prevent division by zero
     return (attended / total) * 100;
   }
 
@@ -56,42 +44,43 @@ class _StudentAttendanceScreenState extends State<StudentAttendanceScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Attendance')),
-      body: Column(
-        children: [
-          SizedBox(height: 20),
-          Expanded(
-            child: ListView.builder(
-              itemCount: attendanceData.length,
-              itemBuilder: (context, index) {
-                final item = attendanceData[index];
-                double percentage = _calculatePercentage(
-                  item['attended'],
-                  item['total'],
-                );
-                return Card(
-                  margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                  child: ListTile(
-                    title: Text(item['subject']),
-                    subtitle: Text(
-                      '${item['attended']}/${item['total']} Sessions Attended',
-                    ),
-                    trailing: CircularPercentIndicator(
-                      radius: 40.0,
-                      lineWidth: 5.0,
-                      percent: percentage / 100,
-                      center: Text('${percentage.toInt()}%'),
-                      progressColor:
-                          percentage >= 85
-                              ? Colors.green
-                              : (percentage >= 75 ? Colors.orange : Colors.red),
-                    ),
+      body: attendanceData.isEmpty
+          ? Center(child: Text('No attendance data available.'))
+          : Column(
+              children: [
+                SizedBox(height: 20),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: attendanceData.length,
+                    itemBuilder: (context, index) {
+                      final item = attendanceData[index];
+                      double percentage = _calculatePercentage(
+                        item['attended'],
+                        item['total'],
+                      );
+                      return Card(
+                        margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                        child: ListTile(
+                          title: Text(item['subject']),
+                          subtitle: Text(
+                            '${item['attended']}/${item['total']} Sessions Attended',
+                          ),
+                          trailing: CircularPercentIndicator(
+                            radius: 40.0,
+                            lineWidth: 5.0,
+                            percent: (percentage / 100).clamp(0.0, 1.0),
+                            center: Text('${percentage.toInt()}%'),
+                            progressColor: percentage >= 85
+                                ? Colors.green
+                                : (percentage >= 75 ? Colors.orange : Colors.red),
+                          ),
+                        ),
+                      );
+                    },
                   ),
-                );
-              },
+                ),
+              ],
             ),
-          ),
-        ],
-      ),
     );
   }
 }
@@ -131,3 +120,4 @@ class CircularPercentIndicator extends StatelessWidget {
     );
   }
 }
+
