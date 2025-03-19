@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'student_viewAttenda.dart';
+import 'student_viewattend.dart';
 
 class StudentHomeScreen extends StatefulWidget {
   @override
